@@ -73,6 +73,8 @@ app.on('window-all-closed', () => {
 
 // ─── 자동 업데이트
 function setupAutoUpdater(): void {
+  // allowPrerelease: true → atom 피드에서 직접 태그 파싱 (github.com/releases/latest의 406 우회)
+  autoUpdater.allowPrerelease = true
   autoUpdater.autoDownload = false
   autoUpdater.on('update-available', (info) =>
     mainWindow?.webContents.send('update-available', { version: info.version })
