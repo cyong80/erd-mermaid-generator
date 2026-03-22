@@ -13,9 +13,9 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20",
         outline:
-          "border bg-[oklch(0.22_0.03_250/0.4)] backdrop-blur-xl [border-color:var(--glass-border)] hover:bg-[oklch(0.3_0.05_250/0.5)] hover:text-accent-foreground shadow-[0_0_0_1px_oklch(0.5_0.02_250/0.08)_inset]",
+          "border border-border bg-secondary/60 backdrop-blur-xl hover:bg-accent hover:text-accent-foreground shadow-[0_0_0_1px_var(--glass-highlight)_inset]",
         secondary:
-          "bg-[oklch(0.28_0.04_250/0.5)] backdrop-blur-xl text-secondary-foreground hover:bg-[oklch(0.32_0.05_250/0.6)] border [border-color:var(--glass-border)]",
+          "bg-secondary backdrop-blur-xl text-secondary-foreground hover:bg-secondary/80 border border-border",
         ghost:
           "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",

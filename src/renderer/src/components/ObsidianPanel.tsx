@@ -89,7 +89,7 @@ export default function ObsidianPanel() {
     : `ERD/${dbName}-erd.md`;
 
   return (
-    <div className="p-3.5 px-4 flex flex-col flex-1 overflow-auto bg-[oklch(0.16_0.03_250/0.25)]">
+    <div className="p-3.5 px-4 flex flex-col flex-1 overflow-auto bg-muted/50">
       <div className="mb-3.5">
         <Label className="mb-1.5 block">Obsidian Vault</Label>
 
@@ -98,7 +98,7 @@ export default function ObsidianPanel() {
             className={cn(
               "rounded-xl p-2 px-2.5 flex items-center gap-2 border backdrop-blur-xl",
               isValid
-                ? "bg-[oklch(0.25_0.03_250/0.4)] border-emerald-500/40"
+                ? "bg-secondary/80 border-emerald-500/40"
                 : "bg-destructive/10 border-destructive/40",
             )}
           >

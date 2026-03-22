@@ -21,7 +21,7 @@ export default function CodePanel() {
         className={[
           "flex-1 text-foreground font-mono text-sm leading-relaxed p-4 py-4 px-5",
           "border-none resize-none outline-none w-full",
-          "bg-[oklch(0.16_0.03_250/0.3)] backdrop-blur-sm [tab-size:2]",
+          "bg-input backdrop-blur-sm [tab-size:2]",
         ].join(" ")}
       />
     </div>

@@ -50,10 +50,62 @@
    Apple Liquid Glass Theme
    - Translucent frosted glass with lensing
    - Soft rounded forms, layered depth
-   - Adaptive light/dark feel
+   - Light & Dark mode support
    ═══════════════════════════════════════════════════════════════ */
 
-:root {
+:root,
+.light {
+  --radius: 0.75rem;
+  /* Base - soft, bright light (visionOS-like) */
+  --background: oklch(0.97 0.01 250);
+  --foreground: oklch(0.2 0.02 250);
+  /* Glass surfaces - translucent with blur */
+  --glass-bg: oklch(1 0 0 / 0.5);
+  --glass-border: oklch(0.9 0.02 250 / 0.6);
+  --glass-highlight: oklch(1 0 0 / 0.35);
+  /* Card/Popover - frosted glass */
+  --card: oklch(1 0 0 / 0.65);
+  --card-foreground: oklch(0.2 0.02 250);
+  --popover: oklch(1 0 0 / 0.9);
+  --popover-foreground: oklch(0.2 0.02 250);
+  /* Primary - Apple blue accent */
+  --primary: oklch(0.5 0.2 250);
+  --primary-foreground: oklch(0.99 0 0);
+  /* Secondary/Muted - soft glass tints */
+  --secondary: oklch(0.94 0.02 250 / 0.6);
+  --secondary-foreground: oklch(0.25 0.02 250);
+  --muted: oklch(0.93 0.015 250 / 0.5);
+  --muted-foreground: oklch(0.42 0.02 250);
+  --accent: oklch(0.92 0.03 250 / 0.6);
+  --accent-foreground: oklch(0.2 0.02 250);
+  /* Destructive */
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  /* Borders - subtle glass edges */
+  --border: oklch(0.9 0.02 250 / 0.5);
+  --input: oklch(0.95 0.015 250 / 0.6);
+  --ring: oklch(0.5 0.2 250 / 0.5);
+  --chart-1: oklch(0.5 0.2 250);
+  --chart-2: oklch(0.55 0.18 165);
+  --chart-3: oklch(0.65 0.15 65);
+  --chart-4: oklch(0.55 0.2 305);
+  --chart-5: oklch(0.6 0.2 25);
+  /* Sidebar */
+  --sidebar: oklch(0.98 0.01 250 / 0.6);
+  --sidebar-foreground: oklch(0.2 0.02 250);
+  --sidebar-primary: oklch(0.5 0.2 250);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.94 0.02 250 / 0.6);
+  --sidebar-accent-foreground: oklch(0.25 0.02 250);
+  --sidebar-border: oklch(0.9 0.02 250 / 0.5);
+  --sidebar-ring: oklch(0.5 0.2 250 / 0.5);
+  --glass-elevated-bg: oklch(1 0 0 / 0.65);
+  --glass-input-bg: oklch(0.98 0.01 250 / 0.5);
+  --glass-input-focus: oklch(0.5 0.2 250 / 0.35);
+  --glass-shadow-inset: oklch(0.4 0.02 250 / 0.06);
+}
+
+.dark {
   --radius: 0.75rem;
   /* Base - deep, soft dark (visionOS-like) */
   --background: oklch(0.12 0.02 250);
@@ -98,6 +150,10 @@
   --sidebar-accent-foreground: oklch(0.95 0.01 250);
   --sidebar-border: oklch(0.35 0.05 250 / 0.4);
   --sidebar-ring: oklch(0.55 0.22 250 / 0.6);
+  --glass-elevated-bg: oklch(0.2 0.03 250 / 0.55);
+  --glass-input-bg: oklch(0.2 0.03 250 / 0.35);
+  --glass-input-focus: oklch(0.55 0.22 250 / 0.35);
+  --glass-shadow-inset: oklch(0.5 0.02 250 / 0.08);
 }
 
 @layer base {
@@ -114,6 +170,26 @@
     font-family:
       -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
       "Helvetica Neue", system-ui, sans-serif;
+    background-attachment: fixed;
+    /* Light default (before hydration / system) */
+    background-image:
+      radial-gradient(
+        ellipse 120% 80% at 50% -20%,
+        oklch(0.6 0.08 250 / 0.2),
+        transparent
+      ),
+      radial-gradient(
+        ellipse 80% 50% at 100% 50%,
+        oklch(0.75 0.05 260 / 0.12),
+        transparent
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 0% 80%,
+        oklch(0.7 0.04 240 / 0.08),
+        transparent
+      );
+  }
+  .dark body {
     background-image:
       radial-gradient(
         ellipse 120% 80% at 50% -20%,
@@ -130,7 +206,6 @@
         oklch(0.18 0.04 240 / 0.1),
         transparent
       );
-    background-attachment: fixed;
   }
   .font-mono {
     font-family:
@@ -145,60 +220,76 @@
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--glass-border);
   box-shadow:
-    0 0 0 1px oklch(0.5 0.02 250 / 0.08) inset,
+    0 0 0 1px var(--glass-shadow-inset) inset,
     0 4px 24px -4px oklch(0 0 0 / 0.3),
     0 1px 2px -1px oklch(0 0 0 / 0.2);
 }
 
 .glass-panel-elevated {
-  background: oklch(0.2 0.03 250 / 0.55);
+  background: var(--glass-elevated-bg);
   backdrop-filter: blur(32px) saturate(200%);
   -webkit-backdrop-filter: blur(32px) saturate(200%);
   border: 1px solid var(--glass-border);
   box-shadow:
-    0 0 0 1px oklch(0.55 0.05 250 / 0.12) inset,
+    0 0 0 1px var(--glass-highlight) inset,
     0 8px 32px -8px oklch(0 0 0 / 0.4),
     0 2px 8px -2px oklch(0 0 0 / 0.25);
 }
 
 .glass-input {
-  background: oklch(0.2 0.03 250 / 0.35) !important;
+  background: var(--glass-input-bg) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border) !important;
 }
 
 .glass-input:focus {
-  box-shadow: 0 0 0 2px oklch(0.55 0.22 250 / 0.35);
+  box-shadow: 0 0 0 2px var(--glass-input-focus);
 }
 
-/* 스크롤바 - Liquid Glass 스타일 */
+/* 스크롤바 - Liquid Glass 스타일 (테마 연동) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-::-webkit-scrollbar-track {
+:root ::-webkit-scrollbar-track,
+.light ::-webkit-scrollbar-track {
+  background: oklch(0.92 0.02 250 / 0.4);
+  border-radius: 999px;
+}
+.dark ::-webkit-scrollbar-track {
   background: oklch(0.15 0.02 250 / 0.3);
   border-radius: 999px;
 }
-::-webkit-scrollbar-thumb {
+:root ::-webkit-scrollbar-thumb,
+.light ::-webkit-scrollbar-thumb {
+  background: oklch(0.6 0.04 250 / 0.5);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+:root ::-webkit-scrollbar-thumb:hover,
+.light ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.5 0.05 250 / 0.65);
+}
+.dark ::-webkit-scrollbar-thumb {
   background: oklch(0.4 0.05 250 / 0.6);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
-::-webkit-scrollbar-thumb:hover {
+.dark ::-webkit-scrollbar-thumb:hover {
   background: oklch(0.5 0.06 250 / 0.7);
 }
 
-/* Sonner Toast - Liquid Glass 스타일 */
+/* Sonner Toast - Liquid Glass 스타일 (CSS 변수로 테마 연동) */
 [data-sonner-toaster] [data-sonner-toast] {
-  background: oklch(0.2 0.03 250 / 0.55) !important;
+  background: var(--glass-elevated-bg) !important;
   backdrop-filter: blur(32px) saturate(200%) !important;
   -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
   border: 1px solid var(--glass-border) !important;
   box-shadow:
-    0 0 0 1px oklch(0.55 0.05 250 / 0.12) inset,
+    0 0 0 1px var(--glass-highlight) inset,
     0 8px 32px -8px oklch(0 0 0 / 0.4),
     0 2px 8px -2px oklch(0 0 0 / 0.25) !important;
   border-radius: var(--radius-2xl) !important;

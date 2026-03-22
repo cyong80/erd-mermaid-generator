@@ -55,7 +55,7 @@ export interface ElectronAPI {
   saveMarkdown: (payload: { mermaidCode: string; dbName: string }) => Promise<{ saved: boolean; filePath?: string }>
   loadMarkdown: () => Promise<{ loaded: boolean; mermaidCode?: string; dbName?: string; filePath?: string; error?: string }>
   copyClipboard: (text: string) => Promise<void>
-  exportImage: (payload: { dataUrl: string; format: string; dbName: string }) => Promise<{ saved: boolean; filePath?: string }>
+  exportImage: (payload: { dataUrl: string; format: string; dbName: string }) => Promise<{ saved: boolean; filePath?: string; error?: string }>
 
   getObsidianVault: () => Promise<string>
   pickObsidianVault: () => Promise<{ picked: boolean; vaultPath?: string; isValid?: boolean }>

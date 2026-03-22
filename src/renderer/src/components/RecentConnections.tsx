@@ -65,7 +65,7 @@ export default function RecentConnections({
           variant="outline"
           size="xs"
           onClick={handleClearAll}
-          className="ml-auto h-6 px-1.5 text-[11px]"
+          className="ml-auto h-6 px-1.5 text-[11px] bg-white dark:bg-transparent border-border"
         >
           전체 삭제
         </Button>
@@ -78,8 +78,8 @@ export default function RecentConnections({
             onClick={() => onSelect(conn)}
             className={cn(
               "flex items-center gap-3 p-2.5 px-3 rounded-xl cursor-pointer transition-all duration-200",
-              "bg-[oklch(0.25_0.03_250/0.4)] backdrop-blur-xl border [border-color:var(--glass-border)]",
-              "hover:bg-[oklch(0.3_0.05_250/0.5)] hover:[border-color:oklch(0.4_0.05_250/0.6)]",
+              "bg-white dark:bg-secondary/70 backdrop-blur-xl border border-border",
+              "hover:bg-accent hover:border-border",
             )}
           >
             <Database className="size-4 text-muted-foreground shrink-0" />

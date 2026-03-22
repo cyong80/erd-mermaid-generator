@@ -38,8 +38,8 @@ export default function ConnectDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] max-h-[85vh] overflow-y-auto glass-panel-elevated border [border-color:var(--glass-border)]">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[480px] max-h-[85vh] overflow-y-auto rounded-xl glass-panel-elevated border [border-color:var(--glass-border)]">
+        <DialogHeader className="text-left">
           <DialogTitle>DB 연결</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-0 -mx-1">

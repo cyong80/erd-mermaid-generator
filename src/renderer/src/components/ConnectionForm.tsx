@@ -31,17 +31,21 @@ interface FieldProps {
 
 const Field = ({ label, name, type = 'text', value, onChange, placeholder }: FieldProps) => (
   <div className="mb-4">
-    <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-2.5 block">
+    <Label
+      htmlFor={name}
+      className="text-xs uppercase tracking-wider text-muted-foreground mb-2.5 block"
+    >
       {label}
     </Label>
     <Input
+      id={name}
       type={type}
       name={name}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
       autoComplete="off"
-      className="h-10 py-2.5"
+      className="h-10 py-2.5 bg-white dark:bg-input"
     />
   </div>
 )
@@ -140,11 +144,14 @@ export default function ConnectionForm({
       )}
 
       <div className="mb-4">
-        <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-2.5 block">
+        <Label
+          htmlFor="db-type"
+          className="text-xs uppercase tracking-wider text-muted-foreground mb-2.5 block"
+        >
           DB 종류
         </Label>
         <Select value={form.dbType} onValueChange={setDbType}>
-          <SelectTrigger className="h-10 py-2.5 w-full">
+          <SelectTrigger id="db-type" className="h-10 py-2.5 w-full bg-white dark:bg-input">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

@@ -3,6 +3,7 @@ import { Hexagon } from "lucide-react";
 import PreviewStep from "./components/PreviewStep";
 import ConnectDialog from "./components/ConnectDialog";
 import UpdateBanner from "./components/UpdateBanner";
+import ThemeToggle from "./components/ThemeToggle";
 import { Toaster } from "./components/ui/sonner";
 import { Badge } from "./components/ui/badge";
 import { cn } from "./lib/utils";
@@ -51,6 +52,9 @@ export default function App() {
               )}
             </>
           )}
+        </div>
+        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+          <ThemeToggle />
         </div>
       </div>
 

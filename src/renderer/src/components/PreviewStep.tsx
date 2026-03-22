@@ -12,9 +12,7 @@ interface PreviewStepProps {
   onOpenConnectDialog: () => void;
 }
 
-export default function PreviewStep({
-  onOpenConnectDialog,
-}: PreviewStepProps) {
+export default function PreviewStep({ onOpenConnectDialog }: PreviewStepProps) {
   const mermaidCode = useErdStore((s) => s.mermaidCode);
   const schema = useErdStore((s) => s.schema);
   const activePanel = useErdStore((s) => s.activePanel);
@@ -38,7 +36,8 @@ export default function PreviewStep({
           <div className="flex gap-3">
             <Button
               onClick={onOpenConnectDialog}
-              className="h-11 px-6 gap-2 font-semibold rounded-xl glass-panel border [border-color:var(--glass-border)]"
+              variant="outline"
+              className="h-11 px-6 gap-2 font-semibold rounded-xl border [border-color:var(--glass-border)]"
             >
               <ScanLine className="size-4" />
               DB 연결

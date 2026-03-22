@@ -11,7 +11,7 @@ const badgeVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
         secondary:
-          "bg-[oklch(0.28_0.04_250/0.5)] backdrop-blur-xl text-secondary-foreground [a&]:hover:bg-secondary/90 border [border-color:var(--glass-border)]",
+          "bg-secondary backdrop-blur-xl text-secondary-foreground [a&]:hover:bg-secondary/90 border border-border",
         destructive:
           "bg-destructive text-white focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 [a&]:hover:bg-destructive/90",
         outline:

@@ -390,15 +390,22 @@ ipcMain.handle(
       filters: [{ name: format.toUpperCase(), extensions: [ext] }],
     })
     if (canceled || !filePath) return { saved: false }
-    if (format === 'svg') {
-      await writeFile(
-        filePath,
-        Buffer.from(dataUrl.replace(/^data:image\/svg\+xml;base64,/, ''), 'base64')
-      )
-    } else {
-      await writeFile(filePath, nativeImage.createFromDataURL(dataUrl).toPNG())
+    try {
+      if (format === 'svg') {
+        await writeFile(
+          filePath,
+          Buffer.from(dataUrl.replace(/^data:image\/svg\+xml;base64,/, ''), 'base64')
+        )
+      } else {
+        const png = nativeImage.createFromDataURL(dataUrl).toPNG()
+        if (!png || png.length === 0) throw new Error('PNG 데이터 생성 실패')
+        await writeFile(filePath, png)
+      }
+      return { saved: true, filePath }
+    } catch (err) {
+      console.error('export-image error:', err)
+      return { saved: false, error: (err as Error).message }
     }
-    return { saved: true, filePath }
   }
 )
 

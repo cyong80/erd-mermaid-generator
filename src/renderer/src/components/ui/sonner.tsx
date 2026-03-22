@@ -5,6 +5,7 @@ import {
   OctagonXIcon,
   TriangleAlertIcon,
 } from "lucide-react"
+import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 
 /**
@@ -12,9 +13,10 @@ import { Toaster as Sonner, type ToasterProps } from "sonner"
  * globals.css의 [data-sonner-toast] 선택자로 스타일 적용.
  */
 const Toaster = ({ ...props }: ToasterProps) => {
+  const { resolvedTheme } = useTheme()
   return (
     <Sonner
-      theme="dark"
+      theme={(resolvedTheme ?? "dark") as "light" | "dark" | "system"}
       position="bottom-center"
       offset="3.5rem"
       duration={2800}

@@ -9,7 +9,6 @@ import type {
 export type PanelType = "preview" | "filter" | "code" | "obsidian";
 
 interface ErdState {
-  step: "connect" | "preview";
   schema: Schema | null;
   mermaidCode: string;
   dbName: string;
@@ -37,7 +36,6 @@ interface ErdActions {
 }
 
 const initialState: ErdState = {
-  step: "preview",
   schema: null,
   mermaidCode: "",
   dbName: "",
@@ -77,7 +75,6 @@ export const useErdStore = create<ErdState & ErdActions>((set, get) => ({
         dbHost: config.host,
         dbPort: config.port,
         includedTables: null,
-        step: "preview",
         activePanel: "preview",
         loading: false,
         error: "",
@@ -164,31 +161,40 @@ export const useErdStore = create<ErdState & ErdActions>((set, get) => ({
         dbName,
       });
       if (r.saved) toast.success("SVG 내보내기 완료");
+      else if (r.error) toast.error(`SVG 저장 실패: ${r.error}`);
     } else {
-      const url = URL.createObjectURL(
-        new Blob([new XMLSerializer().serializeToString(svg)], {
-          type: "image/svg+xml",
-        }),
-      );
+      const svgString = new XMLSerializer().serializeToString(svg);
+      const dataUrlSvg = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
       const img = new Image();
-      img.onload = async () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = svg.viewBox.baseVal.width || svg.clientWidth || 1200;
-        canvas.height = svg.viewBox.baseVal.height || svg.clientHeight || 800;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-        ctx.fillStyle = "#0f172a";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-        URL.revokeObjectURL(url);
-        const r = await window.api.exportImage({
-          dataUrl: canvas.toDataURL("image/png"),
-          format: "png",
-          dbName,
-        });
-        if (r.saved) toast.success("PNG 내보내기 완료");
+      img.onerror = () => {
+        toast.error("PNG 변환 실패 (이미지 로드 오류)");
       };
-      img.src = url;
+      img.onload = async () => {
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(img.naturalWidth || 1200, 1);
+          canvas.height = Math.max(img.naturalHeight || 800, 1);
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            toast.error("PNG 변환 실패 (캔버스 컨텍스트 없음)");
+            return;
+          }
+          ctx.fillStyle = "#0f172a";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+          const dataUrl = canvas.toDataURL("image/png");
+          const r = await window.api.exportImage({
+            dataUrl,
+            format: "png",
+            dbName,
+          });
+          if (r.saved) toast.success("PNG 내보내기 완료");
+          else if (r.error) toast.error(`PNG 저장 실패: ${r.error}`);
+        } catch (e) {
+          toast.error(`PNG 변환 실패: ${(e as Error).message}`);
+        }
+      };
+      img.src = dataUrlSvg;
     }
   },
 }));

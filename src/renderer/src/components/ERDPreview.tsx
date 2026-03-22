@@ -1,11 +1,47 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Plus, Minus, Maximize2 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useErdStore } from "@/store/erdStore";
 
+const MERMAID_DARK = {
+  theme: "dark" as const,
+  themeVariables: {
+    darkMode: true,
+    background: "transparent",
+    primaryColor: "#1e293b",
+    primaryBorderColor: "#475569",
+    primaryTextColor: "#e2e8f0",
+    lineColor: "#64748b",
+    secondaryColor: "#0f172a",
+    tertiaryColor: "#1e293b",
+    edgeLabelBackground: "#1e293b",
+    fontFamily: 'ui-monospace, "SF Mono", monospace',
+    fontSize: "12px",
+  },
+};
+
+const MERMAID_LIGHT = {
+  theme: "neutral" as const,
+  themeVariables: {
+    darkMode: false,
+    background: "transparent",
+    primaryColor: "#f1f5f9",
+    primaryBorderColor: "#cbd5e1",
+    primaryTextColor: "#1e293b",
+    lineColor: "#94a3b8",
+    secondaryColor: "#ffffff",
+    tertiaryColor: "#f8fafc",
+    edgeLabelBackground: "#f1f5f9",
+    fontFamily: 'ui-monospace, "SF Mono", monospace',
+    fontSize: "12px",
+  },
+};
+
 export default function ERDPreview() {
   const mermaidCode = useErdStore((s) => s.mermaidCode);
+  const { resolvedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -30,22 +66,12 @@ export default function ERDPreview() {
         });
       }
 
+      const mermaidTheme =
+        resolvedTheme === "dark" ? MERMAID_DARK : MERMAID_LIGHT;
+
       window.mermaid!.initialize({
         startOnLoad: false,
-        theme: "dark",
-        themeVariables: {
-          darkMode: true,
-          background: "transparent",
-          primaryColor: "#1e293b",
-          primaryBorderColor: "#475569",
-          primaryTextColor: "#e2e8f0",
-          lineColor: "#64748b",
-          secondaryColor: "#0f172a",
-          tertiaryColor: "#1e293b",
-          edgeLabelBackground: "#1e293b",
-          fontFamily: 'ui-monospace, "SF Mono", monospace',
-          fontSize: "12px",
-        },
+        ...mermaidTheme,
         er: {
           diagramPadding: 30,
           layoutDirection: "TB",
@@ -78,7 +104,7 @@ export default function ERDPreview() {
     return () => {
       cancelled = true;
     };
-  }, [mermaidCode]);
+  }, [mermaidCode, resolvedTheme]);
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
@@ -107,6 +133,10 @@ export default function ERDPreview() {
     setPos({ x: 0, y: 0 });
   };
 
+  const isDark = resolvedTheme === "dark" || resolvedTheme === undefined;
+  const gridColor = isDark ? "oklch(0.3 0.04 250 / 0.4)" : "oklch(0.6 0.03 250 / 0.25)";
+  const fillColor = isDark ? "oklch(0.2 0.03 250 / 0.2)" : "oklch(0.95 0.02 250 / 0.15)";
+
   return (
     <div
       className={cn(
@@ -116,8 +146,8 @@ export default function ERDPreview() {
       )}
       style={{
         backgroundImage: `
-          radial-gradient(oklch(0.3 0.04 250 / 0.4) 1px, transparent 1px),
-          radial-gradient(ellipse 100% 100% at 50% 50%, oklch(0.2 0.03 250 / 0.2), transparent)
+          radial-gradient(${gridColor} 1px, transparent 1px),
+          radial-gradient(ellipse 100% 100% at 50% 50%, ${fillColor}, transparent)
         `,
         backgroundSize: "24px 24px, 100% 100%",
       }}

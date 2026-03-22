@@ -51,8 +51,7 @@ export default function Toolbar() {
       title={title}
       className={cn(
         "h-8 px-2.5 text-xs font-medium rounded-xl transition-all",
-        active &&
-          "bg-[oklch(0.35_0.06_250/0.5)] backdrop-blur-xl border [border-color:var(--glass-border)]",
+        active && "bg-accent backdrop-blur-xl border border-border",
       )}
     >
       {children}
