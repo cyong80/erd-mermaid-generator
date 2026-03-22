@@ -12,6 +12,7 @@ permissions:
 jobs:
   release:
     strategy:
+      max-parallel: 1  # 순차 실행하여 publish 경쟁 상태 방지
       matrix:
         include:
           - platform: mac
