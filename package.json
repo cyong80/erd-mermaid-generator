@@ -60,6 +60,7 @@
     "mac": {
       "icon": "build/icon.png",
       "target": "dmg",
+      "arch": ["x64", "arm64"],
       "hardenedRuntime": true,
       "gatekeeperAssess": false
     },
