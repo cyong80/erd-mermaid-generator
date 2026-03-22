@@ -1,6 +1,6 @@
 {
   "name": "erd-mermaid-generator",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "DB Schema → Mermaid ERD Generator",
   "main": "out/main/index.js",
   "scripts": {
@@ -8,7 +8,10 @@
     "build": "electron-vite build",
     "icon": "node scripts/build-icon.mjs",
     "preview": "electron-vite preview",
-    "package": "node scripts/build-icon.mjs && electron-vite build && electron-builder"
+    "package": "node scripts/build-icon.mjs && electron-vite build && electron-builder",
+    "package:mac": "node scripts/build-icon.mjs && electron-vite build && electron-builder --mac",
+    "package:win": "node scripts/build-icon.mjs && electron-vite build && electron-builder --win",
+    "package:linux": "node scripts/build-icon.mjs && electron-vite build && electron-builder --linux"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.2",
@@ -73,8 +76,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "YOUR_GITHUB_USER",
-      "repo": "erd-electron"
+      "owner": "cyong80",
+      "repo": "erd-mermaid-generator"
     }
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"

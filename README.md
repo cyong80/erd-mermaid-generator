@@ -15,15 +15,20 @@ DB 스키마를 스캔해 **Mermaid ERD**를 생성하는 크로스플랫폼 데
 ## 시작하기
 
 ```bash
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 ## 빌드
 
 ```bash
 # 현재 플랫폼용 패키징
-npm run package
+yarn package
+
+# 플랫폼별 패키징
+yarn package:mac    # macOS (.dmg)
+yarn package:win    # Windows (.exe)
+yarn package:linux  # Linux (.AppImage)
 
 # 출력 위치
 dist/
@@ -31,6 +36,24 @@ dist/
   ERD Generator Setup 1.0.0.exe  # Windows
   ERD Generator-1.0.0.AppImage   # Linux
 ```
+
+## 자동 배포 (GitHub Actions)
+
+- **태그 푸시 시**: GitHub Releases에 자동 배포 (macOS / Windows / Linux)
+- **수동 실행**: Actions → Release → Run workflow → 빌드 산출물을 artifact로 다운로드
+
+### 릴리스 생성 방법
+
+1. `package.json`의 `version` 수정
+2. 커밋 및 푸시
+3. 태그 생성 및 푸시:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+앱 내 **자동 업데이트**(electron-updater)가 GitHub Releases를 확인합니다.
 
 ## 프로젝트 구조
 
