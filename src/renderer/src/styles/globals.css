@@ -1,0 +1,219 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Apple Liquid Glass Theme
+   - Translucent frosted glass with lensing
+   - Soft rounded forms, layered depth
+   - Adaptive light/dark feel
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --radius: 0.75rem;
+  /* Base - deep, soft dark (visionOS-like) */
+  --background: oklch(0.12 0.02 250);
+  --foreground: oklch(0.95 0.01 250);
+  /* Glass surfaces - translucent with blur */
+  --glass-bg: oklch(0.2 0.03 250 / 0.4);
+  --glass-border: oklch(0.35 0.05 250 / 0.5);
+  --glass-highlight: oklch(0.5 0.05 250 / 0.15);
+  /* Card/Popover - frosted glass */
+  --card: oklch(0.18 0.03 250 / 0.6);
+  --card-foreground: oklch(0.95 0.01 250);
+  --popover: oklch(0.18 0.03 250 / 0.85);
+  --popover-foreground: oklch(0.95 0.01 250);
+  /* Primary - Apple blue accent */
+  --primary: oklch(0.55 0.22 250);
+  --primary-foreground: oklch(0.99 0 0);
+  /* Secondary/Muted - soft glass tints */
+  --secondary: oklch(0.28 0.04 250 / 0.5);
+  --secondary-foreground: oklch(0.92 0.01 250);
+  --muted: oklch(0.28 0.04 250 / 0.4);
+  --muted-foreground: oklch(0.6 0.02 250);
+  --accent: oklch(0.35 0.06 250 / 0.4);
+  --accent-foreground: oklch(0.95 0.01 250);
+  /* Destructive */
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  /* Borders - subtle glass edges */
+  --border: oklch(0.35 0.05 250 / 0.4);
+  --input: oklch(0.25 0.03 250 / 0.5);
+  --ring: oklch(0.55 0.22 250 / 0.6);
+  --chart-1: oklch(0.55 0.22 250);
+  --chart-2: oklch(0.65 0.18 165);
+  --chart-3: oklch(0.75 0.15 65);
+  --chart-4: oklch(0.6 0.2 305);
+  --chart-5: oklch(0.65 0.2 25);
+  /* Sidebar */
+  --sidebar: oklch(0.16 0.03 250 / 0.5);
+  --sidebar-foreground: oklch(0.95 0.01 250);
+  --sidebar-primary: oklch(0.55 0.22 250);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.28 0.04 250 / 0.5);
+  --sidebar-accent-foreground: oklch(0.95 0.01 250);
+  --sidebar-border: oklch(0.35 0.05 250 / 0.4);
+  --sidebar-ring: oklch(0.55 0.22 250 / 0.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+      "Helvetica Neue", system-ui, sans-serif;
+    background-image:
+      radial-gradient(
+        ellipse 120% 80% at 50% -20%,
+        oklch(0.35 0.08 250 / 0.25),
+        transparent
+      ),
+      radial-gradient(
+        ellipse 80% 50% at 100% 50%,
+        oklch(0.2 0.05 260 / 0.15),
+        transparent
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 0% 80%,
+        oklch(0.18 0.04 240 / 0.1),
+        transparent
+      );
+    background-attachment: fixed;
+  }
+  .font-mono {
+    font-family:
+      ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", monospace;
+  }
+}
+
+/* ═══ Liquid Glass utility classes ═══ */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 0 0 1px oklch(0.5 0.02 250 / 0.08) inset,
+    0 4px 24px -4px oklch(0 0 0 / 0.3),
+    0 1px 2px -1px oklch(0 0 0 / 0.2);
+}
+
+.glass-panel-elevated {
+  background: oklch(0.2 0.03 250 / 0.55);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 0 0 1px oklch(0.55 0.05 250 / 0.12) inset,
+    0 8px 32px -8px oklch(0 0 0 / 0.4),
+    0 2px 8px -2px oklch(0 0 0 / 0.25);
+}
+
+.glass-input {
+  background: oklch(0.2 0.03 250 / 0.35) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border) !important;
+}
+
+.glass-input:focus {
+  box-shadow: 0 0 0 2px oklch(0.55 0.22 250 / 0.35);
+}
+
+/* 스크롤바 - Liquid Glass 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(0.15 0.02 250 / 0.3);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.4 0.05 250 / 0.6);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.5 0.06 250 / 0.7);
+}
+
+/* Sonner Toast - Liquid Glass 스타일 */
+[data-sonner-toaster] [data-sonner-toast] {
+  background: oklch(0.2 0.03 250 / 0.55) !important;
+  backdrop-filter: blur(32px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow:
+    0 0 0 1px oklch(0.55 0.05 250 / 0.12) inset,
+    0 8px 32px -8px oklch(0 0 0 / 0.4),
+    0 2px 8px -2px oklch(0 0 0 / 0.25) !important;
+  border-radius: var(--radius-2xl) !important;
+  color: var(--foreground) !important;
+}
+[data-sonner-toaster] [data-sonner-toast] [data-title] {
+  color: var(--foreground) !important;
+  font-weight: 500 !important;
+}
+[data-sonner-toaster] [data-sonner-toast] [data-description] {
+  color: var(--muted-foreground) !important;
+}
+
+/* Mermaid ERD 테마 - Liquid Glass 조화 */
+.mermaid svg {
+  background: transparent !important;
+  max-width: 100%;
+}
