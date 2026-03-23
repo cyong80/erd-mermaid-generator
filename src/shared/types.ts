@@ -18,6 +18,8 @@ export interface SchemaColumn {
   comment: string
   /** 컬럼 설명 (comment와 동일하게 사용, Mermaid에 표시) */
   description?: string
+  /** 기본값 (DB COLUMN_DEFAULT / column_default) */
+  defaultValue?: string
 }
 
 export interface SchemaTable {

@@ -118,6 +118,7 @@ interface SchemaColumn {
   isNullable: boolean;
   comment: string;
   description?: string;
+  defaultValue?: string;
 }
 interface SchemaTable {
   name: string;
@@ -147,6 +148,8 @@ interface ColRow {
   IS_NULLABLE?: string;
   column_comment?: string;
   COLUMN_COMMENT?: string;
+  column_default?: string | null;
+  COLUMN_DEFAULT?: string | null;
 }
 interface RelRow {
   fromTable?: string;
@@ -190,6 +193,10 @@ function buildSchema(
       dbType === "postgres"
         ? row.column_comment || ""
         : row.COLUMN_COMMENT || "";
+    const rawDefault =
+      dbType === "postgres"
+        ? row.column_default
+        : row.COLUMN_DEFAULT;
     tableMap[name].columns.push({
       name: (dbType === "postgres" ? row.column_name : row.COLUMN_NAME)!,
       type: formatColumnType(row, dbType),
@@ -199,6 +206,10 @@ function buildSchema(
         (dbType === "postgres" ? row.is_nullable : row.IS_NULLABLE) === "YES",
       comment: rawComment,
       description: rawComment || undefined,
+      defaultValue:
+        rawDefault != null && String(rawDefault).trim() !== ""
+          ? String(rawDefault).trim()
+          : undefined,
     });
   }
   const fkSet = new Set(
@@ -236,7 +247,7 @@ async function scanMySQL(config: DBConfig): Promise<Schema> {
     connectTimeout: 10000,
   });
   const [columns] = await conn.query(
-    `SELECT TABLE_NAME,COLUMN_NAME,DATA_TYPE,COLUMN_TYPE,COLUMN_KEY,IS_NULLABLE,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=? ORDER BY TABLE_NAME,ORDINAL_POSITION`,
+    `SELECT TABLE_NAME,COLUMN_NAME,DATA_TYPE,COLUMN_TYPE,COLUMN_KEY,IS_NULLABLE,COLUMN_COMMENT,COLUMN_DEFAULT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=? ORDER BY TABLE_NAME,ORDINAL_POSITION`,
     [config.database],
   );
   const [relations] = await conn.query(
@@ -258,7 +269,7 @@ async function scanPostgres(config: DBConfig): Promise<Schema> {
   });
   await client.connect();
   const { rows: columns } = await client.query(
-    `SELECT c.table_name,c.column_name,c.data_type,c.character_maximum_length,c.is_nullable,CASE WHEN pk.column_name IS NOT NULL THEN 'PRI' ELSE '' END AS column_key,col_description((c.table_schema||'.'||c.table_name)::regclass::oid,c.ordinal_position) AS column_comment FROM information_schema.columns c LEFT JOIN (SELECT ku.table_name,ku.column_name FROM information_schema.table_constraints tc JOIN information_schema.key_column_usage ku ON tc.constraint_name=ku.constraint_name AND tc.table_schema=ku.table_schema WHERE tc.constraint_type='PRIMARY KEY' AND tc.table_schema='public') pk ON c.table_name=pk.table_name AND c.column_name=pk.column_name WHERE c.table_schema='public' ORDER BY c.table_name,c.ordinal_position`,
+    `SELECT c.table_name,c.column_name,c.data_type,c.character_maximum_length,c.is_nullable,c.column_default,CASE WHEN pk.column_name IS NOT NULL THEN 'PRI' ELSE '' END AS column_key,col_description((c.table_schema||'.'||c.table_name)::regclass::oid,c.ordinal_position) AS column_comment FROM information_schema.columns c LEFT JOIN (SELECT ku.table_name,ku.column_name FROM information_schema.table_constraints tc JOIN information_schema.key_column_usage ku ON tc.constraint_name=ku.constraint_name AND tc.table_schema=ku.table_schema WHERE tc.constraint_type='PRIMARY KEY' AND tc.table_schema='public') pk ON c.table_name=pk.table_name AND c.column_name=pk.column_name WHERE c.table_schema='public' ORDER BY c.table_name,c.ordinal_position`,
   );
   const { rows: relations } = await client.query(
     `SELECT tc.table_name AS "fromTable",kcu.column_name AS "fromColumn",ccu.table_name AS "toTable",ccu.column_name AS "toColumn" FROM information_schema.table_constraints tc JOIN information_schema.key_column_usage kcu ON tc.constraint_name=kcu.constraint_name AND tc.table_schema=kcu.table_schema JOIN information_schema.constraint_column_usage ccu ON tc.constraint_name=ccu.constraint_name WHERE tc.constraint_type='FOREIGN KEY' AND tc.table_schema='public'`,
@@ -304,7 +315,14 @@ function schemaToMermaid(
       const flags = [col.isPK ? "PK" : "", col.isFK ? "FK" : ""]
         .filter(Boolean)
         .join(",");
-      const desc = (col.description ?? col.comment ?? "").trim();
+      const baseDesc = (col.description ?? col.comment ?? "").trim();
+      const requiredLabel = col.isNullable ? "선택" : "필수";
+      const descParts = [
+        baseDesc,
+        `(${requiredLabel})`,
+        ...(col.defaultValue ? [`기본값: ${col.defaultValue}`] : []),
+      ].filter(Boolean);
+      const desc = descParts.join(" ");
       const comment = desc ? ` "${sanitizeMermaidComment(desc)}"` : "";
       lines.push(
         `    ${sanitizeMermaidType(col.type)} ${col.name}${flags ? " " + flags : ""}${comment}`,
